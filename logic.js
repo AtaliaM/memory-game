@@ -192,6 +192,7 @@ function checkIfCardsEqual(firstCard, secondCard) {
     else {
         correctGuesses++;
         if (correctGuesses === numCards/2) { //if all pairs found
+            clearInterval(timer);
             winPopUp.style.display = "block";
         }
     }
