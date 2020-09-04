@@ -68,7 +68,7 @@ header h2 {
     grid-template-columns: repeat(4,150px);
     grid-template-rows: repeat(3, 150px);
     grid-gap: 10px;
-    height: fit-content;
+    height: 100vh;
     margin: 10px;
 }
 
@@ -92,7 +92,6 @@ header h2 {
 
 /*  CARDS */
 
-/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
 .card-container {
     width: 150px;
     height: 150px;
@@ -106,7 +105,6 @@ header h2 {
     /* position: relative; */
     }
 
-  /* Style the front side (fallback if image is missing) */
   .flip-card-back {
     width: 150px;
     height: 150px;
