@@ -7,15 +7,28 @@ const wrongGuesses = document.querySelector(".counter");
 const cardsContainer = document.querySelector(".cards-container");
 const screenContainer = document.querySelector(".screen-container");
 const winPopUp = document.querySelector(".pop-up");
+const easyMode = document.querySelector(".easy-mode");
+const mediumMode = document.querySelector(".medium-mode");
+const hardMode = document.querySelector(".hard-mode");
 
-document.querySelectorAll('.new-game-btn').forEach(item => { 
-        {
-            item.addEventListener('click', startGame);
-        }
-    });
+document.querySelectorAll('.new-game-btn').forEach(item => {
+    {
+        item.addEventListener('click', startGame);
+    }
+});
+
+easyMode.addEventListener("click", startGame);
+mediumMode.addEventListener("click", startGame);
+hardMode.addEventListener("click", startGame);
+
 
 function startGame(event) {
     console.log("yay");
+    // console.log(event.currentTarget);
+    let gameBoard;
+    cardsContainer.classList.remove("medium-board");
+    cardsContainer.classList.remove("hard-board");
+
     if (event.currentTarget.parentElement === winPopUp) { //if the start button we clicked on was the one on the popup
         winPopUp.style.display = "none";
     }
@@ -23,7 +36,20 @@ function startGame(event) {
     clockContainer.innerHTML = "";
     wrongGuesses.textContent = 0;
     correctGuesses = 0;
-    const gameBoard = creatingBoard(3, 4);
+    if (event.currentTarget === mediumMode) {
+
+        gameBoard = creatingBoard(3, 6);
+        cardsContainer.classList.add("medium-board");
+    }
+    else if (event.currentTarget === hardMode) {
+        gameBoard = creatingBoard(4, 6);
+        cardsContainer.classList.add("hard-board");
+    }
+    else {
+        gameBoard = creatingBoard(3, 4);
+        cardsContainer.classList.remove("medium-board");
+        cardsContainer.classList.remove("hard-board");
+    }
     creatingCards(gameBoard, pics);
 }
 
@@ -100,12 +126,16 @@ timerContainer.appendChild(clockContainer);
 
 const pics = [{ src: "./photos/black-widow.jpg", display: 0 }, { src: "./photos/cap.jpg", display: 0 },
 { src: "./photos/hulk.jpg", display: 0 }, { src: "./photos/iron-man.jpg", display: 0 },
-{ src: "./photos/scarlet.jpg", display: 0 },
-{ src: "./photos/thor.png", display: 0 }];
+{ src: "./photos/scarlet.jpg", display: 0 }, { src: "./photos/ant.jpg", display: 0 },
+{ src: "./photos/thor.png", display: 0 }, { src: "./photos/groot.jpg", display: 0 }, { src: "./photos/rocket.jpg", display: 0 },
+{ src: "./photos/thanos.jpg", display: 0 }, { src: "./photos/loki.jpg", display: 0 }, { src: "./photos/spider.jpg", display: 0 }];
 
+pics.forEach(item => {
+    item.display = 0;
+});
 //creating 3X4 board//
 function creatingBoard(cols, rows) {
-    numCards = cols*rows;
+    numCards = cols * rows;
     let gameBoard = [];
 
     for (let i = 0; i < cols; i++) {
@@ -142,21 +172,28 @@ function creatingCards(gameBoard, picArray) {
     //entering the pictures in random to the cards
     let domImgIndex = 0;
     const allImgs = document.querySelectorAll("img");
+    let tempPicArray;
+    if (numCards !== 24) {
+        tempPicArray = picArray.slice(0, (numCards / 2)); //temp array containing the num of pics needed for this level
+    }
+    else {
+        tempPicArray = [...picArray];
+    }
+    console.log(tempPicArray);
     for (let k = 0; k < 2; k++) {
 
-        for (let i = picArray.length - 1; i >= 0; i--) {
+        for (let i = tempPicArray.length - 1; i >= 0; i--) {
             let j = Math.floor(Math.random() * (i + 1));
-            let temp = picArray[i];
-            picArray[i] = picArray[j];
-            picArray[j] = temp;
+            let temp = tempPicArray[i];
+            tempPicArray[i] = tempPicArray[j];
+            tempPicArray[j] = temp;
 
-            allImgs[domImgIndex].src = picArray[i].src;
+            allImgs[domImgIndex].src = tempPicArray[i].src;
             allImgs[domImgIndex].parentElement.previousElementSibling.addEventListener("click", flipCard);
-            picArray[i].display++;
+            tempPicArray[i].display++;
             domImgIndex++;
         }
     }
-    console.log(pics);
 
 }
 
@@ -191,7 +228,7 @@ function checkIfCardsEqual(firstCard, secondCard) {
     }
     else {
         correctGuesses++;
-        if (correctGuesses === numCards/2) { //if all pairs found
+        if (correctGuesses === numCards / 2) { //if all pairs found
             clearInterval(timer);
             winPopUp.style.display = "block";
         }
