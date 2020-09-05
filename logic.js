@@ -23,8 +23,8 @@ hardMode.addEventListener("click", startGame);
 
 
 function startGame(event) {
-    console.log("yay");
     // console.log(event.currentTarget);
+
     let gameBoard;
     cardsContainer.classList.remove("medium-board");
     cardsContainer.classList.remove("hard-board");
@@ -33,11 +33,11 @@ function startGame(event) {
         winPopUp.style.display = "none";
     }
     cardsContainer.innerHTML = "";
-    clockContainer.innerHTML = "";
+    clockContainer.firstElementChild.textContent = "00:00:000";
     wrongGuesses.textContent = 0;
     correctGuesses = 0;
+   
     if (event.currentTarget === mediumMode) {
-
         gameBoard = creatingBoard(3, 6);
         cardsContainer.classList.add("medium-board");
     }
@@ -49,6 +49,7 @@ function startGame(event) {
         gameBoard = creatingBoard(3, 4);
         cardsContainer.classList.remove("medium-board");
         cardsContainer.classList.remove("hard-board");
+        clockContainer.firstElementChild.textContent = "00:00:000";
     }
     creatingCards(gameBoard, pics);
 }
