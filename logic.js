@@ -36,7 +36,7 @@ function startGame(event) {
     clockContainer.firstElementChild.textContent = "00:00:000";
     wrongGuesses.textContent = 0;
     correctGuesses = 0;
-   
+
     if (event.currentTarget === mediumMode) {
         gameBoard = creatingBoard(3, 6);
         cardsContainer.classList.add("medium-board");
@@ -151,26 +151,34 @@ function creatingBoard(cols, rows) {
 
 const gameBoard = creatingBoard(3, 4);
 
-function creatingCards(gameBoard, picArray) {
+function drawCardSide(cardContainer,cardSideClassName,withImg) {
+    const cardSide = document.createElement("div");
+    cardSide.classList.add(cardSideClassName);
+    cardContainer.appendChild(cardSide);
+    if (withImg) {
+        const cardImg = document.createElement("img");
+        cardSide.appendChild(cardImg);
+    }
 
+}
+function drawCard() {
+    const cardContainer = document.createElement("div");
+    cardContainer.classList.add("card-container");
+    drawCardSide(cardContainer, "flip-card-back");
+    drawCardSide(cardContainer,"flip-card-front", true);
+    cardsContainer.appendChild(cardContainer);
+}
+
+function creatingCards(gameBoard, picArray) {
+    //drawingCards()
+    //attachImagesToCards()
     for (let i = 0; i < gameBoard.length; i++) {
         for (let j = 0; j < gameBoard[i].length; j++) {
-            const cardContainer = document.createElement("div");
-            cardContainer.classList.add("card-container");
-            const cardFront = document.createElement("div");
-            cardFront.classList.add("flip-card-front");
-            const cardImg = document.createElement("img");
-            const cardBack = document.createElement("div");
-            cardBack.classList.add("flip-card-back");
-
-            cardFront.appendChild(cardImg);
-            cardContainer.appendChild(cardBack);
-            cardContainer.appendChild(cardFront);
-            cardsContainer.appendChild(cardContainer);
+            drawCard();
         }
     }
 
-    //entering the pictures in random to the cards
+    //attaching the pictures in random to the cards
     let domImgIndex = 0;
     const allImgs = document.querySelectorAll("img");
     let tempPicArray;
